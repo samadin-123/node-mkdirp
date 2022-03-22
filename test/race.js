@@ -7,7 +7,7 @@ var _0777 = parseInt('0777', 8);
 var _0755 = parseInt('0755', 8);
 
 test('race', function (t) {
-    t.plan(10);
+    t.plan(6);
     var ps = [ '', 'tmp' ];
     
     for (var i = 0; i < 25; i++) {
@@ -23,11 +23,11 @@ test('race', function (t) {
     
     function mk (file, cb) {
         mkdirp(file, _0755, function (err) {
-            t.ifError(err);
+            if (err) throw err
             exists(file, function (ex) {
                 t.ok(ex, 'file created');
                 fs.stat(file, function (err, stat) {
-                    t.ifError(err);
+                    if (err) throw err
                     t.equal(stat.mode & _0777, _0755);
                     t.ok(stat.isDirectory(), 'target not a directory');
                 });

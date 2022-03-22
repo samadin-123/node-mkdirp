@@ -18,11 +18,10 @@ var itw = ps.slice(0, 3).join('/');
 
 
 test('clobber-pre', function (t) {
-    console.error("about to write to "+itw)
     fs.writeFileSync(itw, 'I AM IN THE WAY, THE TRUTH, AND THE LIGHT.');
 
     fs.stat(itw, function (er, stat) {
-        t.ifError(er)
+        if (er) throw er
         t.ok(stat && stat.isFile(), 'should be file')
         t.end()
     })

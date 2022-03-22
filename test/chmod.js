@@ -18,9 +18,9 @@ var file = ps.join('/');
 test('chmod-pre', function (t) {
     var mode = _0744
     mkdirp(file, mode, function (er) {
-        t.ifError(er, 'should not error');
+        if (er) throw er
         fs.stat(file, function (er, stat) {
-            t.ifError(er, 'should exist');
+            if (er) throw er
             t.ok(stat && stat.isDirectory(), 'should be directory');
             t.equal(stat && stat.mode & _0777, mode, 'should be 0744');
             t.end();
@@ -31,9 +31,9 @@ test('chmod-pre', function (t) {
 test('chmod', function (t) {
     var mode = _0755
     mkdirp(file, mode, function (er) {
-        t.ifError(er, 'should not error');
+        if (er) throw er
         fs.stat(file, function (er, stat) {
-            t.ifError(er, 'should exist');
+            if (er) throw er
             t.ok(stat && stat.isDirectory(), 'should be directory');
             t.end();
         });

@@ -1,2 +1,3 @@
 thesis	attempt	metric	baseline	status	summary
 #1	thesis/1-cache-dirname-results-to-reduce-path-parsing-overhead	6326.4700	5237.1100	accepted	Implemented dirname caching using a Map. The cache reduces path parsing overhead during recursive directory creation. Benchmark shows ~20.8% improvement (5237.11 -> 6326.47 ops/sec).
+#7	thesis/7-replace-object-assign-wrapper-with-direct-function-exports	6309.0400	6326.4700	discarded	Replaced Object.assign wrapper with direct property assignments to eliminate object creation overhead. However, benchmark shows no improvement (6309.04 vs baseline 6326.47 ops/sec, -0.27%). The Object.assign overhead at module initialization time does not impact runtime performance in this hot path.

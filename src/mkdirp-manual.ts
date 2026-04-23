@@ -1,12 +1,24 @@
 import { dirname } from 'path'
 import { MkdirpOptions, optsArg } from './opts-arg.js'
 
+// Cache for dirname results to reduce path parsing overhead
+const dirnameCache = new Map<string, string>()
+
+const cachedDirname = (path: string): string => {
+  let cached = dirnameCache.get(path)
+  if (cached === undefined) {
+    cached = dirname(path)
+    dirnameCache.set(path, cached)
+  }
+  return cached
+}
+
 export const mkdirpManualSync = (
   path: string,
   options?: MkdirpOptions,
   made?: string | undefined | void
 ): string | undefined | void => {
-  const parent = dirname(path)
+  const parent = cachedDirname(path)
   const opts = { ...optsArg(options), recursive: false }
 
   if (parent === path) {
@@ -50,7 +62,7 @@ export const mkdirpManual = Object.assign(
   ): Promise<string | undefined | void> => {
     const opts = optsArg(options)
     opts.recursive = false
-    const parent = dirname(path)
+    const parent = cachedDirname(path)
     if (parent === path) {
       return opts.mkdirAsync(path, opts).catch(er => {
         // swallowed by recursive implementation on posix systems
